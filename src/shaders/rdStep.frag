@@ -68,18 +68,57 @@ void main() {
 
   vec2 L  = laplacian();
 
-  float UVV = U * V * V;
-  float dU = uDu * L.r - UVV + uFeed * (1.0 - U);
-  float dV = uDv * L.g + UVV - (uFeed + uKill) * V;
+  // Use dt from uniform (manual control via slider)
+  float localDt = uDt;
 
-  U += dU * uDt;
-  V += dV * uDt;
-
+  // Cursor-reactive f and k with sine oscillation
+  float localFeed = uFeed;
+  float localKill = uKill;
+  
   if (uMouse.x >= 0.0) {
     float d = distance(vUv, uMouse);
-    float touch = exp(-pow(d / uTouchRadius, 2.0));
-    V += uTouchGain * touch;
+    // Use a wider falloff for f/k modulation to have more visible effect
+    float touchRadiusWide = uTouchRadius * 2.0; // Wider radius for f/k effect
+    float touch = exp(-pow(d / touchRadiusWide, 2.0));
+    
+    // Sine wave oscillating over 3.5 seconds: -1 to 1
+    float period = 3.5; // seconds
+    float sine = sin(uTime * 2.0 * 3.14159265 / period);
+    
+    // Map sine (-1 to 1) to f/k variation (relative to base values)
+    // When sine = 1: high f, low k (growth)
+    // When sine = -1: low f, high k (suppression/killing)
+    float fVariationRatio = 0.9; // 90% variation relative to base f (more extreme)
+    float kVariationRatio = 0.9; // 90% variation relative to base k (more extreme)
+    
+    // Apply variation with Gaussian falloff from cursor
+    float fMod = sine * uFeed * fVariationRatio * touch;
+    float kMod = -sine * uKill * kVariationRatio * touch; // inverse relationship
+    
+    localFeed = uFeed + fMod;
+    localKill = uKill + kMod;
+    
+    // Cursor-reactive dt: always increase dt near cursor to speed up reaction
+    // Use wider radius for dt to make it more visible
+    float dtTouchRadius = uTouchRadius * 3.0; // Even wider radius for dt effect
+    float dtTouch = exp(-pow(d / dtTouchRadius, 2.0));
+    // Increase dt by up to 3x near cursor (always speed up, no oscillation)
+    float dtModulation = 1.0 + dtTouch * 2.0; // Range: 1.0 to 3.0x base value
+    localDt = uDt * dtModulation;
+    
+    // Modulate V injection based on sine wave - more V when suppressing (sine = -1)
+    float touchV = exp(-pow(d / uTouchRadius, 2.0));
+    // When sine = -1 (suppression), inject more V; when sine = 1 (growth), inject less
+    float vModulation = 1.0 - sine * 0.5; // 1.5x V when sine = -1, 0.5x when sine = 1
+    V += uTouchGain * touchV * vModulation;
   }
+
+  float UVV = U * V * V;
+  float dU = uDu * L.r - UVV + localFeed * (1.0 - U);
+  float dV = uDv * L.g + UVV - (localFeed + localKill) * V;
+
+  U += dU * localDt;
+  V += dV * localDt;
 
   outUV = clamp(vec2(U, V), 0.0, 1.0);
 }
