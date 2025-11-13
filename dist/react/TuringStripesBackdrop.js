@@ -1,20 +1,20 @@
-import { jsx as c } from "react/jsx-runtime";
-import { useRef as u, useEffect as i } from "react";
-import { createTuringStripes as o } from "../index.js";
-function l(e) {
-  const t = u(null), r = u(null);
-  return i(() => {
-    if (t.current)
-      return r.current = o(t.current, e), () => {
-        var n;
-        (n = r.current) == null || n.cleanup(), r.current = null;
+import { jsx as i } from "react/jsx-runtime";
+import { useRef as o, useEffect as u } from "react";
+import { createTuringStripes as c } from "../index.js";
+function d(r) {
+  const n = o(null), e = o(null);
+  return u(() => {
+    if (n.current)
+      return e.current = c(n.current, r), () => {
+        var t;
+        (t = e.current) == null || t.cleanup(), e.current = null;
       };
-  }, []), i(() => {
-    r.current && r.current.setParams(e);
-  }, [e]), /* @__PURE__ */ c(
+  }, []), u(() => {
+    e.current && e.current.setParams(r);
+  }, [r]), /* @__PURE__ */ i(
     "canvas",
     {
-      ref: t,
+      ref: n,
       style: {
         position: "fixed",
         inset: 0,
@@ -23,11 +23,17 @@ function l(e) {
         zIndex: 0,
         pointerEvents: "auto",
         // Use browser's best quality rendering (avoid pixelated/crisp-edges)
-        imageRendering: "auto"
+        imageRendering: "auto",
+        border: "none",
+        outline: "none",
+        borderLeft: "none",
+        borderRight: "none",
+        borderTop: "none",
+        borderBottom: "none"
       }
     }
   );
 }
 export {
-  l as default
+  d as default
 };

@@ -34,6 +34,12 @@ export default function TuringStripesBackdrop(props: StripesOptions) {
         pointerEvents: "auto",
         // Use browser's best quality rendering (avoid pixelated/crisp-edges)
         imageRendering: "auto",
+        border: "none",
+        outline: "none",
+        borderLeft: "none",
+        borderRight: "none",
+        borderTop: "none",
+        borderBottom: "none",
       } as React.CSSProperties}
     />
   );
