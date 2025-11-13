@@ -32,7 +32,9 @@ export default function TuringStripesBackdrop(props: StripesOptions) {
         height: "100vh",
         zIndex: 0,
         pointerEvents: "auto",
-      }}
+        // Use browser's best quality rendering (avoid pixelated/crisp-edges)
+        imageRendering: "auto",
+      } as React.CSSProperties}
     />
   );
 }

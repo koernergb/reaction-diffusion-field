@@ -46,7 +46,7 @@ export function createTuringStripes(
   // Create Three.js renderer
   const renderer = new THREE.WebGLRenderer({ 
     canvas,
-    antialias: false, 
+    antialias: true,  // Enable anti-aliasing to reduce aliasing artifacts
     alpha: true, 
     powerPreference: 'high-performance' 
   });
@@ -130,6 +130,8 @@ export function createTuringStripes(
       magFilter: THREE.LinearFilter,
       wrapS: THREE.ClampToEdgeWrapping,
       wrapT: THREE.ClampToEdgeWrapping,
+      // Generate mipmaps for better quality at different scales
+      generateMipmaps: false, // Keep false for float textures (mipmaps not always supported)
     });
   }
 
@@ -278,11 +280,16 @@ export function createTuringStripes(
   }
 
   function resizeCanvas() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Use full device pixel ratio for high-DPI displays (removed cap at 2)
+    const dpr = window.devicePixelRatio || 1;
     renderer.setPixelRatio(dpr);
     const width = canvas.clientWidth || window.innerWidth;
     const height = canvas.clientHeight || window.innerHeight;
     renderer.setSize(width, height, false);
+    
+    // Optionally increase grid size for high-DPI displays to reduce aliasing
+    // This is handled by the user via the gridSize parameter, but we could auto-adjust here
+    // For now, we rely on anti-aliasing and proper DPR handling
   }
 
   function rdStep() {

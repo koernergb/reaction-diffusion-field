@@ -13702,7 +13702,8 @@ float bandsAA(float x, float freq, float thickness) {
   
   float b = smoothstep(1.0 - thickness, 1.0, (y * 0.5 + 0.5));
   
-  return smoothstep(0.0, w, b) * smoothstep(1.0, 1.0 - w, b);
+  float aaWidth = max(w * 2.0, 0.01); 
+  return smoothstep(0.0, aaWidth, b) * smoothstep(1.0, 1.0 - aaWidth, b);
 }
 
 vec3 tonemap(vec3 c, float e) {
@@ -13791,7 +13792,8 @@ const Ou = {
 function Bu(i, e = {}) {
   const t = { ...Ou, ...e }, n = new va({
     canvas: i,
-    antialias: !1,
+    antialias: !0,
+    // Enable anti-aliasing to reduce aliasing artifacts
     alpha: !0,
     powerPreference: "high-performance"
   });
@@ -13870,7 +13872,10 @@ function Bu(i, e = {}) {
       minFilter: 1006,
       magFilter: 1006,
       wrapS: 1001,
-      wrapT: 1001
+      wrapT: 1001,
+      // Generate mipmaps for better quality at different scales
+      generateMipmaps: !1
+      // Keep false for float textures (mipmaps not always supported)
     });
   }
   const g = new $i({
@@ -13972,7 +13977,7 @@ function Bu(i, e = {}) {
     c && (c.dispose(), h == null || h.dispose(), d == null || d.dispose()), c = p(A), h = p(A), d = m(A), g.uniforms.uPrev.value = c.texture, g.uniforms.uTexel.value.set(1 / A, 1 / A), v.uniforms.uTexel.value.set(1 / A, 1 / A), f.uniforms.uTexel.value.set(1 / A, 1 / A), l.grid = A, R(A), Y();
   }
   function T() {
-    const A = Math.min(window.devicePixelRatio || 1, 2);
+    const A = window.devicePixelRatio || 1;
     n.setPixelRatio(A);
     const J = i.clientWidth || window.innerWidth, O = i.clientHeight || window.innerHeight;
     n.setSize(J, O, !1);

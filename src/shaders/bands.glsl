@@ -77,14 +77,15 @@ vec3 normalFromHeight(vec2 uv) {
   return n;
 }
 
-// Cosine bands with derivative AA
+// Cosine bands with derivative AA (improved)
 float bandsAA(float x, float freq, float thickness) {
   float w = fwidth(x * freq);                    // derivative for AA
   float y = cos(2.0 * 3.14159265 * freq * x);   // -1..1
   // map cosine to [0,1]; thickness controls how much near the peaks we keep
   float b = smoothstep(1.0 - thickness, 1.0, (y * 0.5 + 0.5));
-  // optional aa via sharpening around edges using w
-  return smoothstep(0.0, w, b) * smoothstep(1.0, 1.0 - w, b);
+  // Improved AA: use wider smoothstep for better edge smoothing
+  float aaWidth = max(w * 2.0, 0.01); // Ensure minimum AA width
+  return smoothstep(0.0, aaWidth, b) * smoothstep(1.0, 1.0 - aaWidth, b);
 }
 
 // simple tonemap
