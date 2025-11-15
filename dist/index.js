@@ -14137,7 +14137,7 @@ function Bu(i, e = {}) {
     o.time += J;
     const N = isNaN(o.time) ? 0 : o.time;
     g.uniforms.uTime.value = N;
-    const W = 20, re = 0.8, he = 1.5, fe = (re + he) / 2, xe = (he - re) / 2, Ee = fe + xe * Math.sin(N * Math.PI / W);
+    const W = 10, re = 0.8, he = 1.2, fe = (re + he) / 2, xe = (he - re) / 2, Ee = fe + xe * Math.sin(N * Math.PI / W);
     if (g.uniforms.uDt.value = Ee, z(), Y(), f.uniforms.lightDir.value.copy(o.lightDir).normalize(), f.uniforms.warpAmp.value = o.warpAmp, f.uniforms.warpScale.value = o.warpScale, f.uniforms.warpSpeed.value = o.warpSpeed, f.uniforms.time.value = N, f.uniforms.showHeight.value = o.showHeight ? 1 : 0, f.uniforms.showBandsOnly.value = o.showBandsOnly ? 1 : 0, f.uniforms.enableColor.value = o.enableColor ? 1 : 0, f.uniforms.colorHueOffset.value = o.colorHueOffset, f.uniforms.colorSpeed.value = o.colorSpeed, f.uniforms.colorSaturation.value = o.colorSaturation, f.uniforms.colorIntensity.value = o.colorIntensity, !f.uniforms.uHeight.value) {
       I = requestAnimationFrame(V);
       return;
