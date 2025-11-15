@@ -362,6 +362,15 @@ export function createTuringStripes(
     const validTime = isNaN(sim.time) ? 0 : sim.time;
     stepMat.uniforms.uTime.value = validTime;
 
+    // Global dt oscillation: 20 second sine wave from 0.8 to 1.5
+    const dtPeriod = 20.0; // 20 seconds
+    const dtMin = 0.8;
+    const dtMax = 1.5;
+    const dtCenter = (dtMin + dtMax) / 2.0; // 1.05
+    const dtAmplitude = (dtMax - dtMin) / 2.0; // 0.95
+    const oscillatingDt = dtCenter + dtAmplitude * Math.sin(validTime * Math.PI / dtPeriod);
+    stepMat.uniforms.uDt.value = oscillatingDt;
+
     rdStep();
     computeHeight();
 

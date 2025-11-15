@@ -111,6 +111,11 @@ void main() {
     // When sine = -1 (suppression), inject more V; when sine = 1 (growth), inject less
     float vModulation = 1.0 - sine * 0.5; // 1.5x V when sine = -1, 0.5x when sine = 1
     V += uTouchGain * touchV * vModulation;
+    
+    // Also inject U to maintain balance and prevent black center
+    // Inject U proportional to V injection to keep reaction balanced
+    float touchU = exp(-pow(d / uTouchRadius, 2.0));
+    U += uTouchGain * touchU * 0.5; // Inject U at 50% of V injection rate
   }
 
   float UVV = U * V * V;
