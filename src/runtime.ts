@@ -35,6 +35,11 @@ const DEFAULT_OPTS: Required<StripesOptions> = {
   lightDir: [0.2, 0.5, 1.0],
   showHeight: false,
   showBandsOnly: false,
+  enableColor: false,
+  colorHueOffset: 0.0,
+  colorSpeed: 1.0,
+  colorSaturation: 0.9,
+  colorIntensity: 0.8,
 };
 
 export function createTuringStripes(
@@ -42,16 +47,19 @@ export function createTuringStripes(
   opts: StripesOptions = {}
 ): StripesAPI {
   const options = { ...DEFAULT_OPTS, ...opts };
+  
+  // DEBUG: Log to verify enableColor is being passed correctly
+  console.log('[TuringStripes] Initialization - opts.enableColor:', opts.enableColor, 'options.enableColor:', options.enableColor, 'will set uniform to:', options.enableColor ? 1.0 : 0.0);
 
   // Create Three.js renderer
   const renderer = new THREE.WebGLRenderer({ 
     canvas,
     antialias: true,  // Enable anti-aliasing to reduce aliasing artifacts
-    alpha: true, 
+    alpha: false,  // Set to false so clear color shows through properly
     powerPreference: 'high-performance' 
   });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setClearColor(0x000000, 0.0);
+  renderer.setClearColor(0x0a0a0a, 1.0); // Dark grey background to match when color is disabled
 
   const gl = renderer.getContext();
   if (!(gl instanceof WebGL2RenderingContext)) {
@@ -97,6 +105,11 @@ export function createTuringStripes(
     touchRadius: options.touchRadius,
     mouseUv: new THREE.Vector2(-1, -1),
     time: 0,
+    enableColor: options.enableColor,
+    colorHueOffset: options.colorHueOffset,
+    colorSpeed: options.colorSpeed,
+    colorSaturation: options.colorSaturation,
+    colorIntensity: options.colorIntensity,
   };
 
   // Targets & materials
@@ -200,6 +213,12 @@ export function createTuringStripes(
       time: { value: 0.0 },
       showHeight: { value: sim.showHeight ? 1.0 : 0.0 },
       showBandsOnly: { value: sim.showBandsOnly ? 1.0 : 0.0 },
+      enableColor: { value: options.enableColor ? 1.0 : 0.0 },
+      // DEBUG: Log uniform value
+      colorHueOffset: { value: options.colorHueOffset ?? 0.0 },
+      colorSpeed: { value: options.colorSpeed ?? 1.0 },
+      colorSaturation: { value: options.colorSaturation ?? 0.9 },
+      colorIntensity: { value: options.colorIntensity ?? 0.8 },
     }
   });
 
@@ -353,6 +372,11 @@ export function createTuringStripes(
     bandsMat.uniforms.time.value = validTime;
     bandsMat.uniforms.showHeight.value = sim.showHeight ? 1.0 : 0.0;
     bandsMat.uniforms.showBandsOnly.value = sim.showBandsOnly ? 1.0 : 0.0;
+    bandsMat.uniforms.enableColor.value = sim.enableColor ? 1.0 : 0.0;
+    bandsMat.uniforms.colorHueOffset.value = sim.colorHueOffset;
+    bandsMat.uniforms.colorSpeed.value = sim.colorSpeed;
+    bandsMat.uniforms.colorSaturation.value = sim.colorSaturation;
+    bandsMat.uniforms.colorIntensity.value = sim.colorIntensity;
 
     if (!bandsMat.uniforms.uHeight.value) {
       raf = requestAnimationFrame(loop);
@@ -404,6 +428,9 @@ export function createTuringStripes(
 
   // Initialize
   resizeCanvas();
+  // Clear canvas immediately with dark grey background
+  renderer.setRenderTarget(null);
+  renderer.clear();
   createTargets(sim.grid);
   raf = requestAnimationFrame(loop);
 
@@ -523,6 +550,26 @@ export function createTuringStripes(
       if (opts.showBandsOnly !== undefined) {
         sim.showBandsOnly = opts.showBandsOnly;
         bandsMat.uniforms.showBandsOnly.value = opts.showBandsOnly ? 1.0 : 0.0;
+      }
+      if (opts.enableColor !== undefined) {
+        sim.enableColor = opts.enableColor;
+        bandsMat.uniforms.enableColor.value = opts.enableColor ? 1.0 : 0.0;
+      }
+      if (opts.colorHueOffset !== undefined) {
+        sim.colorHueOffset = opts.colorHueOffset;
+        bandsMat.uniforms.colorHueOffset.value = opts.colorHueOffset;
+      }
+      if (opts.colorSpeed !== undefined) {
+        sim.colorSpeed = opts.colorSpeed;
+        bandsMat.uniforms.colorSpeed.value = opts.colorSpeed;
+      }
+      if (opts.colorSaturation !== undefined) {
+        sim.colorSaturation = opts.colorSaturation;
+        bandsMat.uniforms.colorSaturation.value = opts.colorSaturation;
+      }
+      if (opts.colorIntensity !== undefined) {
+        sim.colorIntensity = opts.colorIntensity;
+        bandsMat.uniforms.colorIntensity.value = opts.colorIntensity;
       }
     },
     reseed: () => {

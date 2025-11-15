@@ -25,6 +25,11 @@ export type StripesOptions = {
   lightDir?: [number, number, number];
   showHeight?: boolean;
   showBandsOnly?: boolean;
+  enableColor?: boolean;
+  colorHueOffset?: number;
+  colorSpeed?: number;
+  colorSaturation?: number;
+  colorIntensity?: number;
 };
 
 export type StripesAPI = {
