@@ -1,16 +1,33 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { createTuringStripes, type StripesOptions } from "../index";
 
 export default function TuringStripesBackdrop(props: StripesOptions) {
   const ref = useRef<HTMLCanvasElement>(null);
   const apiRef = useRef<ReturnType<typeof createTuringStripes> | null>(null);
 
+  // Detect mobile and reduce performance settings
+  const mobileOptimizedProps = useMemo(() => {
+    if (typeof window === "undefined") return props;
+    
+    const isMobile = window.innerWidth < 640 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      return {
+        ...props,
+        gridSize: Math.min(props.gridSize ?? 1024, 512), // Cap at 512 on mobile
+        stepsPerFrame: Math.max(1, Math.floor((props.stepsPerFrame ?? 10) * 0.5)), // Half steps on mobile
+      };
+    }
+    
+    return props;
+  }, [props]);
+
   // Initialize once on mount
   useEffect(() => {
     if (!ref.current) return;
 
-    // Create instance with initial props
-    apiRef.current = createTuringStripes(ref.current, props);
+    // Create instance with mobile-optimized props
+    apiRef.current = createTuringStripes(ref.current, mobileOptimizedProps);
     return () => {
       apiRef.current?.cleanup();
       apiRef.current = null;
@@ -21,9 +38,9 @@ export default function TuringStripesBackdrop(props: StripesOptions) {
   useEffect(() => {
     if (apiRef.current) {
       // setParams handles all parameters including color ones
-      apiRef.current.setParams(props);
+      apiRef.current.setParams(mobileOptimizedProps);
     }
-  }, [props]);
+  }, [mobileOptimizedProps]);
 
   return (
     <div style={{ position: "fixed", inset: 0, width: "100vw", height: "100vh", backgroundColor: "#0a0a0a", zIndex: 0 }}>
