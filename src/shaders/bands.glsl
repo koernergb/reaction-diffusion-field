@@ -35,6 +35,10 @@ uniform float colorSpeed;       // Hue rotation speed multiplier
 uniform float colorSaturation;  // Saturation (0..1)
 uniform float colorIntensity;   // Overall color intensity (0..1)
 
+// Hover displacement
+uniform vec2 uHoverCenter;      // Normalized center in [-1, 1] x [-1, 1]
+uniform float uHoverStrength;   // 0 to 1
+
 // ---- fbm / curl helpers ----
 float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -136,6 +140,21 @@ void main() {
   
   // Height sample for band coordinate; center around 0 with relief
   float H = texture(uHeight, uvWarped).r;
+  
+  // Apply hover displacement - subtle bulge under hovered cards
+  if (uHoverStrength > 0.001) {
+    // Convert UV to normalized space [-1, 1] for distance calculation
+    vec2 uvNorm = vUv * 2.0 - 1.0;
+    float d = distance(uvNorm, uHoverCenter);
+    
+    // Soft falloff: 0.4 away -> 0, center -> 1
+    float hoverFalloff = smoothstep(0.4, 0.0, d);
+    
+    // Max offset scale is small; keep it subtle (0.02-0.03 of height scale)
+    float hoverOffset = hoverFalloff * uHoverStrength * 0.025;
+    
+    H += hoverOffset;
+  }
   
   // Debug: show height as grayscale
   if (showHeight > 0.5) {

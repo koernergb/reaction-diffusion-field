@@ -30,6 +30,9 @@ export type StripesOptions = {
   colorSpeed?: number;
   colorSaturation?: number;
   colorIntensity?: number;
+  // Hover displacement
+  hoverCenter?: [number, number]; // Normalized in [-1, 1] x [-1, 1]
+  hoverStrength?: number;         // 0 to 1
 };
 
 export type StripesAPI = {

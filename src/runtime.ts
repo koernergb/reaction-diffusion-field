@@ -40,6 +40,8 @@ const DEFAULT_OPTS: Required<StripesOptions> = {
   colorSpeed: 1.0,
   colorSaturation: 0.9,
   colorIntensity: 0.8,
+  hoverCenter: [0.0, 0.0],
+  hoverStrength: 0.0,
 };
 
 export function createTuringStripes(
@@ -110,6 +112,8 @@ export function createTuringStripes(
     colorSpeed: options.colorSpeed,
     colorSaturation: options.colorSaturation,
     colorIntensity: options.colorIntensity,
+    hoverCenter: new THREE.Vector2(...options.hoverCenter),
+    hoverStrength: options.hoverStrength,
   };
 
   // Targets & materials
@@ -219,6 +223,8 @@ export function createTuringStripes(
       colorSpeed: { value: options.colorSpeed ?? 1.0 },
       colorSaturation: { value: options.colorSaturation ?? 0.9 },
       colorIntensity: { value: options.colorIntensity ?? 0.8 },
+      uHoverCenter: { value: new THREE.Vector2(...(options.hoverCenter ?? [0.0, 0.0])) },
+      uHoverStrength: { value: options.hoverStrength ?? 0.0 },
     }
   });
 
@@ -386,6 +392,8 @@ export function createTuringStripes(
     bandsMat.uniforms.colorSpeed.value = sim.colorSpeed;
     bandsMat.uniforms.colorSaturation.value = sim.colorSaturation;
     bandsMat.uniforms.colorIntensity.value = sim.colorIntensity;
+    bandsMat.uniforms.uHoverCenter.value.copy(sim.hoverCenter);
+    bandsMat.uniforms.uHoverStrength.value = sim.hoverStrength;
 
     if (!bandsMat.uniforms.uHeight.value) {
       raf = requestAnimationFrame(loop);
@@ -579,6 +587,14 @@ export function createTuringStripes(
       if (opts.colorIntensity !== undefined) {
         sim.colorIntensity = opts.colorIntensity;
         bandsMat.uniforms.colorIntensity.value = opts.colorIntensity;
+      }
+      if (opts.hoverCenter !== undefined) {
+        sim.hoverCenter.set(...opts.hoverCenter);
+        bandsMat.uniforms.uHoverCenter.value.copy(sim.hoverCenter);
+      }
+      if (opts.hoverStrength !== undefined) {
+        sim.hoverStrength = opts.hoverStrength;
+        bandsMat.uniforms.uHoverStrength.value = opts.hoverStrength;
       }
     },
     reseed: () => {
