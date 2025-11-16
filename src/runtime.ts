@@ -362,8 +362,8 @@ export function createTuringStripes(
     const validTime = isNaN(sim.time) ? 0 : sim.time;
     stepMat.uniforms.uTime.value = validTime;
 
-    // Global dt oscillation: 10 second sine wave from 0.8 to 1.2
-    const dtPeriod = 10.0; // 10 seconds
+    // Global dt oscillation: 5 second sine wave from 0.8 to 1.2
+    const dtPeriod = 5.0; // 5 seconds
     const dtMin = 0.8;
     const dtMax = 1.2;
     const dtCenter = (dtMin + dtMax) / 2.0; // 1.05
