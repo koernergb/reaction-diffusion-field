@@ -1,6 +1,6 @@
 // Lightweight, framework-agnostic runtime that owns GL init + RAF.
 import * as THREE from 'three';
-import type { StripesOptions, StripesAPI } from "./index";
+import type { StripesOptions, StripesAPI, RDFieldSnapshot } from "./index";
 
 // Import shaders - these work with vite-plugin-glsl in dev, and will be handled by consumer bundlers
 import vert from './shaders/quad.vert';
@@ -42,6 +42,7 @@ const DEFAULT_OPTS: Required<StripesOptions> = {
   colorIntensity: 0.8,
   hoverCenter: [0.0, 0.0],
   hoverStrength: 0.0,
+  onFieldUpdate: undefined,
 };
 
 export function createTuringStripes(
@@ -115,6 +116,11 @@ export function createTuringStripes(
     hoverCenter: new THREE.Vector2(...options.hoverCenter),
     hoverStrength: options.hoverStrength,
   };
+
+  // Field update callback
+  const onFieldUpdate = options.onFieldUpdate;
+  let lastFieldUpdateTime = 0;
+  const FIELD_UPDATE_INTERVAL_MS = 33; // ~30fps
 
   // Targets & materials
   let rtA: THREE.WebGLRenderTarget | null = null;
@@ -342,6 +348,36 @@ export function createTuringStripes(
     renderer.setRenderTarget(prev);
   }
 
+  // Read RD field data from render target (V channel only)
+  function readFieldSnapshot(): RDFieldSnapshot | null {
+    if (!rtA || !onFieldUpdate) return null;
+
+    const size = rtA.width;
+    const prevTarget = renderer.getRenderTarget();
+    
+    // Read from the current RD state (rtA)
+    renderer.setRenderTarget(rtA);
+    
+    // Read pixels as RG float (WebGL2 only)
+    const pixels = new Float32Array(size * size * 2);
+    const gl2 = gl as WebGL2RenderingContext;
+    gl2.readPixels(0, 0, size, size, gl2.RG, gl2.FLOAT, pixels);
+    
+    renderer.setRenderTarget(prevTarget);
+
+    // Extract V channel (green channel, index 1 in RG format)
+    const vData = new Float32Array(size * size);
+    for (let i = 0; i < size * size; i++) {
+      vData[i] = pixels[i * 2 + 1]; // V channel is at odd indices
+    }
+
+    return {
+      width: size,
+      height: size,
+      data: vData,
+    };
+  }
+
   let running = true;
   let last: number | null = null;
   let raf = 0;
@@ -403,6 +439,15 @@ export function createTuringStripes(
     renderer.setRenderTarget(null);
     renderer.clear();
     renderer.render(bandsScene, camera);
+
+    // Periodically read and send field data to callback
+    if (onFieldUpdate && now - lastFieldUpdateTime >= FIELD_UPDATE_INTERVAL_MS) {
+      const snapshot = readFieldSnapshot();
+      if (snapshot) {
+        onFieldUpdate(snapshot);
+      }
+      lastFieldUpdateTime = now;
+    }
 
     raf = requestAnimationFrame(loop);
   }

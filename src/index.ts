@@ -1,4 +1,12 @@
 // Public API
+export type RDFieldSnapshot = {
+  width: number;
+  height: number;
+  // grayscale or luminance values, row-major, 0..1
+  // This is the V channel from the RD simulation (U,V)
+  data: Float32Array;
+};
+
 export type StripesOptions = {
   gridSize?: number;
   stepsPerFrame?: number;
@@ -33,6 +41,8 @@ export type StripesOptions = {
   // Hover displacement
   hoverCenter?: [number, number]; // Normalized in [-1, 1] x [-1, 1]
   hoverStrength?: number;         // 0 to 1
+  // Callback for field updates (throttled to ~30fps)
+  onFieldUpdate?: (snapshot: RDFieldSnapshot) => void;
 };
 
 export type StripesAPI = {
