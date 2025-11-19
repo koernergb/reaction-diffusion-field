@@ -5,6 +5,7 @@ export type RDFieldSnapshot = {
   // grayscale or luminance values, row-major, 0..1
   // This is the V channel from the RD simulation (U,V)
   data: Float32Array;
+  dt?: number; // optional: RD timestep used for bloom
 };
 
 export type StripesOptions = {
