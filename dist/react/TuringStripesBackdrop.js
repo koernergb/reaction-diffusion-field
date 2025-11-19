@@ -1,17 +1,23 @@
 import { jsx as o } from "react/jsx-runtime";
-import { useRef as i, useEffect as u } from "react";
-import { createTuringStripes as a } from "../index.js";
-function l(r) {
-  const n = i(null), e = i(null);
-  return u(() => {
+import { useRef as u, useMemo as d, useEffect as a } from "react";
+import { createTuringStripes as s } from "../index.js";
+function m(e) {
+  const n = u(null), r = u(null), t = d(() => typeof window > "u" ? e : window.innerWidth < 640 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? {
+    ...e,
+    gridSize: Math.min(e.gridSize ?? 1024, 512),
+    // Cap at 512 on mobile
+    stepsPerFrame: Math.max(1, Math.floor((e.stepsPerFrame ?? 10) * 0.5))
+    // Half steps on mobile
+  } : e, [e]);
+  return a(() => {
     if (n.current)
-      return e.current = a(n.current, r), () => {
-        var t;
-        (t = e.current) == null || t.cleanup(), e.current = null;
+      return r.current = s(n.current, t), () => {
+        var i;
+        (i = r.current) == null || i.cleanup(), r.current = null;
       };
-  }, []), u(() => {
-    e.current && e.current.setParams(r);
-  }, [r]), /* @__PURE__ */ o("div", { style: { position: "fixed", inset: 0, width: "100vw", height: "100vh", backgroundColor: "#0a0a0a", zIndex: 0 }, children: /* @__PURE__ */ o(
+  }, []), a(() => {
+    r.current && r.current.setParams(t);
+  }, [t]), /* @__PURE__ */ o("div", { style: { position: "fixed", inset: 0, width: "100vw", height: "100vh", backgroundColor: "#0a0a0a", zIndex: 0 }, children: /* @__PURE__ */ o(
     "canvas",
     {
       ref: n,
@@ -37,5 +43,5 @@ function l(r) {
   ) });
 }
 export {
-  l as default
+  m as default
 };

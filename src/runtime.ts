@@ -118,7 +118,7 @@ export function createTuringStripes(
   };
 
   // Field update callback
-  const onFieldUpdate = options.onFieldUpdate;
+  let onFieldUpdate = options.onFieldUpdate;
   let lastFieldUpdateTime = 0;
   const FIELD_UPDATE_INTERVAL_MS = 33; // ~30fps
 
@@ -641,6 +641,9 @@ export function createTuringStripes(
       if (opts.hoverStrength !== undefined) {
         sim.hoverStrength = opts.hoverStrength;
         bandsMat.uniforms.uHoverStrength.value = opts.hoverStrength;
+      }
+      if (opts.onFieldUpdate !== undefined) {
+        onFieldUpdate = opts.onFieldUpdate;
       }
     },
     reseed: () => {
