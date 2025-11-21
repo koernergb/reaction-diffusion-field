@@ -9,7 +9,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./react": "./dist/react/TuringStripesBackdrop.js"
-  },
+    },
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite",

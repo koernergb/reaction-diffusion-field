@@ -226,7 +226,7 @@ void main() {
     fragColor = vec4(tonemap(finalColor, exposure), 1.0);
   } else {
     // Original black/white rendering
-    fragColor = vec4(tonemap(lit, exposure), 1.0);
+  fragColor = vec4(tonemap(lit, exposure), 1.0);
   }
 }
 

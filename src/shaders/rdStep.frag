@@ -74,7 +74,7 @@ void main() {
   // Cursor-reactive f and k with sine oscillation
   float localFeed = uFeed;
   float localKill = uKill;
-  
+
   if (uMouse.x >= 0.0) {
     float d = distance(vUv, uMouse);
     // Use a wider falloff for f/k modulation to have more visible effect
