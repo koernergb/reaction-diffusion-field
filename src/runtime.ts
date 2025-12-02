@@ -10,9 +10,10 @@ import bandsFrag from './shaders/bands.glsl';
 
 // Default parameters matching main.ts defaults
 const DEFAULT_OPTS: Required<StripesOptions> = {
-  gridSize: 1024,
+  gridSize: 512,
   stepsPerFrame: 10,
   dt: 1.0,
+  dtModPeriod: 5.0, // Period of sine wave modulating dt (seconds)
   f: 0.037,  // Slightly higher feed for more active patterns
   k: 0.065,  // Slightly higher kill for more dynamic behavior
   Du: 0.16,
@@ -84,6 +85,7 @@ export function createTuringStripes(
     grid: options.gridSize,
     stepsPerFrame: options.stepsPerFrame,
     dt: options.dt,
+    dtModPeriod: options.dtModPeriod,
     f: options.f,
     k: options.k,
     Du: options.Du,
@@ -405,8 +407,8 @@ export function createTuringStripes(
     const validTime = isNaN(sim.time) ? 0 : sim.time;
     stepMat.uniforms.uTime.value = validTime;
 
-    // Global dt oscillation: 5 second sine wave from 0.8 to 1.2
-    const dtPeriod = 5.0; // 5 seconds
+    // Global dt oscillation: sine wave from 0.8 to 1.2
+    const dtPeriod = sim.dtModPeriod;
     const dtMin = 0.8;
     const dtMax = 1.2;
     const dtCenter = (dtMin + dtMax) / 2.0; // 1.05
@@ -525,6 +527,9 @@ export function createTuringStripes(
       if (opts.dt !== undefined) {
         sim.dt = opts.dt;
         stepMat.uniforms.uDt.value = opts.dt;
+      }
+      if (opts.dtModPeriod !== undefined) {
+        sim.dtModPeriod = opts.dtModPeriod;
       }
       if (opts.f !== undefined) {
         sim.f = opts.f;

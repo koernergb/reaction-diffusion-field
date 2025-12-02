@@ -12,6 +12,7 @@ export type StripesOptions = {
   gridSize?: number;
   stepsPerFrame?: number;
   dt?: number;
+  dtModPeriod?: number; // Period (in seconds) of sine wave modulating dt
   f?: number;  // feed
   k?: number;  // kill
   Du?: number;

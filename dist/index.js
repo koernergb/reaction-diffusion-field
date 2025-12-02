@@ -13545,7 +13545,7 @@ void main() {
   
   float localFeed = uFeed;
   float localKill = uKill;
-  
+
   if (uMouse.x >= 0.0) {
     float d = distance(vUv, uMouse);
     
@@ -13883,7 +13883,7 @@ void main() {
     fragColor = vec4(tonemap(finalColor, exposure), 1.0);
   } else {
     
-    fragColor = vec4(tonemap(lit, exposure), 1.0);
+  fragColor = vec4(tonemap(lit, exposure), 1.0);
   }
 }`;
 const Ou = {
