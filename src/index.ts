@@ -5,7 +5,21 @@ export type RDFieldSnapshot = {
   // grayscale or luminance values, row-major, 0..1
   // This is the V channel from the RD simulation (U,V)
   data: Float32Array;
-  dt?: number; // optional: RD timestep used for bloom
+  /** Instantaneous RD timestep (includes dt sine modulation). */
+  dt?: number;
+  /** sin() driving the dt bloom LFO, in [-1, 1] — same clock as the visual oscillation. */
+  lfoSin?: number;
+  /** Simulation time in seconds. */
+  simTime?: number;
+  /** Period of the dt sine (seconds). */
+  dtModPeriod?: number;
+  /** Key RD params (slow knobs that shape the pattern). */
+  f?: number;
+  k?: number;
+  /** Cursor UV in [0,1], or -1 if off-canvas. */
+  mouseU?: number;
+  mouseV?: number;
+  touchGain?: number;
 };
 
 export type StripesOptions = {

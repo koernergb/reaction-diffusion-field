@@ -351,7 +351,11 @@ export function createTuringStripes(
   }
 
   // Read RD field data from render target (V channel only)
-  function readFieldSnapshot(currentDt?: number): RDFieldSnapshot | null {
+  function readFieldSnapshot(
+    currentDt: number,
+    lfoSin: number,
+    simTime: number
+  ): RDFieldSnapshot | null {
     if (!rtA || !onFieldUpdate) return null;
 
     const size = rtA.width;
@@ -378,6 +382,14 @@ export function createTuringStripes(
       height: size,
       data: vData,
       dt: currentDt,
+      lfoSin,
+      simTime,
+      dtModPeriod: sim.dtModPeriod,
+      f: sim.f,
+      k: sim.k,
+      mouseU: sim.mouseUv.x,
+      mouseV: sim.mouseUv.y,
+      touchGain: sim.touchGain,
     };
   }
 
@@ -408,12 +420,13 @@ export function createTuringStripes(
     stepMat.uniforms.uTime.value = validTime;
 
     // Global dt oscillation: sine wave from 0.8 to 1.2
-    const dtPeriod = sim.dtModPeriod;
+    const dtPeriod = Math.max(0.05, sim.dtModPeriod);
     const dtMin = 0.8;
     const dtMax = 1.2;
-    const dtCenter = (dtMin + dtMax) / 2.0; // 1.05
-    const dtAmplitude = (dtMax - dtMin) / 2.0; // 0.95
-    const oscillatingDt = dtCenter + dtAmplitude * Math.sin(validTime * Math.PI / dtPeriod);
+    const dtCenter = (dtMin + dtMax) / 2.0; // 1.0
+    const dtAmplitude = (dtMax - dtMin) / 2.0; // 0.2
+    const lfoSin = Math.sin((validTime * Math.PI) / dtPeriod);
+    const oscillatingDt = dtCenter + dtAmplitude * lfoSin;
     stepMat.uniforms.uDt.value = oscillatingDt;
 
     rdStep();
@@ -445,7 +458,7 @@ export function createTuringStripes(
 
     // Periodically read and send field data to callback
     if (onFieldUpdate && now - lastFieldUpdateTime >= FIELD_UPDATE_INTERVAL_MS) {
-      const snapshot = readFieldSnapshot(oscillatingDt);
+      const snapshot = readFieldSnapshot(oscillatingDt, lfoSin, validTime);
       if (snapshot) {
         onFieldUpdate(snapshot);
       }
