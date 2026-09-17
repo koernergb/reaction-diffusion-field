@@ -1,19 +1,24 @@
 {
-  "name": "@koerner/turing-stripes-rd",
+  "name": "reaction-diffusion-field",
   "version": "0.1.0",
   "private": true,
+  "description": "An interactive Gray-Scott reaction-diffusion field rendered as illuminated Turing stripes.",
   "type": "module",
+  "packageManager": "pnpm@10.28.2",
   "peerDependencies": {
     "react": ">=18"
   },
   "exports": {
-    ".": "./dist/index.js",
-    "./react": "./dist/react/TuringStripesBackdrop.js"
+    ".": "./dist-lib/index.js",
+    "./react": "./dist-lib/react/TuringStripesBackdrop.js"
     },
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "tsc --noEmit && vite build",
+    "build:library": "vite build --config vite.lib.config.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/react": "^19.2.4",

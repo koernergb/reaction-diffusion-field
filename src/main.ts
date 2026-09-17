@@ -279,7 +279,13 @@ function uploadSeed(data: Float32Array, size: number){
   const prev = renderer.getRenderTarget();
   renderer.setRenderTarget(rtA);
   renderer.clear();
-  renderer.copyTextureToTexture(new THREE.Vector2(0,0), tex, rtA.texture);
+  // Three r160 uses the position-first signature. Newer @types releases model
+  // the later source-first API, so keep the runtime-compatible call explicit.
+  (renderer.copyTextureToTexture as unknown as (
+    position: THREE.Vector2,
+    source: THREE.Texture,
+    destination: THREE.Texture,
+  ) => void)(new THREE.Vector2(0, 0), tex, rtA.texture);
   renderer.setRenderTarget(prev);
 }
 
@@ -447,7 +453,8 @@ function loop(now: number){
 }
 
 // ---------- GUI ----------
-const gui = new GUI({ width: 320 });
+const gui = new GUI({ width: 320, title: 'Field controls' });
+gui.close();
 
 const gSim = gui.addFolder('Simulation');
 gSim.add(sim, 'stepsPerFrame', 1, 40, 1).name('Steps/Frame');

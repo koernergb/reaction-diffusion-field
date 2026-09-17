@@ -3,17 +3,5 @@ import glsl from "vite-plugin-glsl";
 
 export default defineConfig({
   plugins: [glsl()],
-  build: {
-    lib: {
-      entry: {
-        index: "src/index.ts",
-        "react/TuringStripesBackdrop": "src/react/TuringStripesBackdrop.tsx"
-      },
-      formats: ["es"],
-      fileName: (format, entryName) => `${entryName}.js`
-    },
-    rollupOptions: {
-      external: ["react", "react/jsx-runtime"]
-    }
-  }
+  server: { host: "127.0.0.1" },
 });
