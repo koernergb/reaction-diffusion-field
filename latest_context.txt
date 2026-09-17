@@ -1,0 +1,148 @@
+# Terminal Personal Site - Current Status & Next Steps
+
+## 🎯 Current Status: M0 Complete, M1 ~80% Complete, BUILD ERROR FIXED ✅
+
+### ✅ COMPLETED (M0 + M1 partial)
+
+**M0. Repo hygiene & boot - COMPLETE**
+- ✅ TS paths configured (`@/* -> src/*`)
+- ✅ Tailwind wired and imported in app/layout.tsx
+- ✅ All route skeletons exist (home, work, blog, about, cv)
+- ✅ Dev server runs, basic pages compile
+- ✅ **BUILD ERROR FIXED** - Server/Client Component boundary resolved
+
+**M1. Terminal Home MVP - ~80% COMPLETE**
+- ✅ Zustand `useUiStore` with theme, glitchActive, reducedMotion
+- ✅ `TerminalFrame` container with aria-live output area
+- ✅ `PromptLine` with typing animation + caret + reduced-motion fallback
+- ✅ `CommandRouter` with all commands (help, ls, open, theme, glitch)
+- ✅ Visible nav buttons (Work/Blog/About/CV) - fully keyboardable
+- ✅ `GlitchEffect` stub (subtle CSS animation, pause with 'p' key)
+- ✅ Session storage for `whoami` first-visit behavior
+- ✅ Reduced motion support throughout
+
+### 🔧 TECHNICAL ISSUES RESOLVED
+
+**✅ Build Error - FIXED:**
+- ✅ Extracted `ThemeClient` to separate client component (`src/components/layout/ThemeClient.tsx`)
+- ✅ Fixed `app/layout.tsx` Server Component boundary
+- ✅ Fixed PostCSS config ES module syntax
+- ✅ Added missing `typecheck` script to package.json
+- ✅ Build now passes successfully (`npm run build`)
+- ✅ TypeScript check passes (`npm run typecheck`)
+- ✅ Dev server runs without errors
+
+### 🔄 IN PROGRESS / PARTIALLY DONE
+
+**Content Structure:**
+- ✅ Content directories exist (`/content/blog/`, `/content/work/`)
+- ❌ MDX files are empty (0 bytes)
+- ❌ No MDX pipeline configured
+- ❌ No content loaders implemented
+
+**Visual Polish:**
+- ✅ Basic glitch effect (subtle CSS)
+- ❌ No route transitions
+- ❌ No fractal burst effects
+- ❌ Theme toggle not fully wired to UI
+
+### 📋 NEXT IMMEDIATE PRIORITIES
+
+**1. ✅ COMPLETED: Fix Build Error (0.5h)**
+- ✅ Extract ThemeClient to separate component
+- ✅ Fix layout.tsx Server Component issue
+- ✅ Fix PostCSS config ES module syntax
+- ✅ Verify build passes
+
+**2. Complete M1: Terminal Home MVP (1h)**
+- Test all terminal commands work
+- Verify reduced-motion paths
+- Ensure no console errors
+- Test keyboard navigation
+
+**3. Start M2: MDX Pipeline (3h)**
+- Install `next-mdx-remote` or configure Next MDX
+- Set up Shiki for code highlighting
+- Configure KaTeX for math
+- Create content loaders
+
+**4. Content Population (1h)**
+- Add sample content to MDX files
+- Test MDX rendering
+- Verify frontmatter parsing
+
+### 🎯 SPRINT PLANNING
+
+**Current Sprint: Complete M1 + Start M2**
+- **Week 1 Goal:** ✅ Fix build + complete terminal MVP + start MDX
+- **Week 2 Goal:** Complete M2 (Work projects) + basic M4 (theme toggle)
+- **Week 3 Goal:** M3 (Blog) + M4 (visual polish)
+- **Week 4 Goal:** M5 (About/CV + SEO + Deploy)
+
+### 🔧 TECHNICAL DEBT
+
+**✅ Immediate - RESOLVED:**
+- ✅ Fix Server/Client Component boundary issues
+- ✅ Add proper TypeScript strict mode
+- ✅ Add missing `typecheck` script to package.json
+
+**Short-term:**
+- Implement proper error boundaries
+- Add loading states for content
+- Improve accessibility (focus management, screen reader)
+
+**Long-term:**
+- Add tests
+- Performance optimization
+- SEO metadata
+- Analytics integration
+
+### 📊 PROGRESS METRICS
+
+- **M0 (Repo hygiene):** 100% ✅
+- **M1 (Terminal Home):** 80% 🔄
+- **M2 (Work/Projects):** 0% ❌
+- **M3 (Blog):** 0% ❌
+- **M4 (Visual polish):** 30% 🔄
+- **M5 (About/CV + Deploy):** 20% 🔄
+
+**Overall Project:** ~35% Complete
+
+### 🚀 NEXT ACTION ITEMS
+
+1. **✅ COMPLETED: Fix build error** (critical blocker)
+2. **Complete terminal MVP testing**
+3. **Set up MDX pipeline**
+4. **Add sample content**
+5. **Implement work projects grid**
+
+### 🎉 BUILD STATUS: GREEN ✅
+
+The foundation is solid and the build error has been resolved! The project now:
+- ✅ Builds successfully (`npm run build`)
+- ✅ Passes TypeScript checks (`npm run typecheck`) 
+- ✅ Runs dev server without errors
+- ✅ Maintains proper Server/Client Component boundaries
+
+### 🚀 NEW: TERMINAL HERO IMPLEMENTED ✅
+
+**TerminalHero Component Features:**
+- ✅ Real xterm.js terminal emulator with analog CRT effects
+- ✅ Animated aurora background with slow spin
+- ✅ Canvas overlay with scanlines, grain, and vignette effects
+- ✅ Interactive commands: help, whoami, open <work|blog|about|cv>, theme <dark|dim|mono>, clear
+- ✅ SSR-safe with client-side only rendering
+- ✅ Dynamic imports to avoid build issues
+- ✅ Responsive design with proper resizing
+
+**Technical Implementation:**
+- ✅ Installed @xterm/xterm and @xterm/addon-fit
+- ✅ Created TerminalHero.tsx with full terminal functionality
+- ✅ Updated TerminalLayout.tsx to include hero at top
+- ✅ Added CSS animations (spin-slow) and CRT effects
+- ✅ Fixed SSR issues with dynamic imports
+- ✅ All terminal commands work and navigate to site routes
+
+**Current Status:** M1 Complete + Terminal Hero MVP ✅
+
+Ready to proceed with M2 (MDX content system)!

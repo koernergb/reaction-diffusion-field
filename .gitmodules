@@ -1,0 +1,3 @@
+[submodule "external/turing-stripes-rd"]
+	path = external/turing-stripes-rd
+	url = https://github.com/koernergb/turing-stripes-rd

@@ -1,0 +1,914 @@
+I get it now — your old site is competent but generic. It looks like every GitHub Pages portfolio: light background, cards for projects, résumé button. That’s fine for a first pass, but it doesn’t say anything about you.
+
+From what you’ve been describing (terminal aesthetic, fractal glitches, seamless scroll with code/music/math/recipes), you want to show off two things simultaneously:
+
+Aesthetic mastery → clean, minimal, modern (think Apple / OpenAI landing pages: white space, motion used sparingly, typography as design).
+
+Personal uniqueness → playful, glitchy, a bit esoteric, weaving together music, math, AI, and cooking into a single field of expression.
+
+High-Level Feedback for Optimization
+1. Landing Page as Identity Statement
+
+Right now: “Koerner Gray-Buchta, passionate about AI” → flat, generic.
+
+Instead: A short poetic phrase, like a field note or terminal motd that sets tone:
+
+> koerner@future:~$ whoami  
+AI researcher, coder, musician, cook, builder of strange tools.  
+> _
+
+
+Fractal glitching or terminal cursor blinking makes it alive.
+
+2. Scrolling Narrative Instead of Tabs
+
+Replace “Projects / Resume / About” tabs with a scrolling journey.
+
+Each section is a module:
+
+Projects → Clean showcase cards, but with embedded demos (AI-music videos inline, math visualizations interactive).
+
+Essays/Blog → Minimal typographic blog, Apple-like but inside the terminal frame. Could host code writeups, recipes, reflections.
+
+Music/Media → Full-bleed embedded videos, fractal animations synced to sound.
+
+Resume/Experience → Still clean & professional, but hidden in a “press key for CV” style terminal command.
+
+3. Design Language
+
+Core aesthetic: black/white terminal core with fractal interruptions.
+
+Details:
+
+Use monospaced font in key places (headers, section intros), but keep body text in clean sans-serif (e.g., Inter, SF Pro).
+
+Motion: subtle glitch shimmer, smooth WebGL fractal bursts every ~10min.
+
+Apple-level polish: whitespace, smooth transitions, no clutter.
+
+4. Balance of Professional + Personal
+
+Companies/places you’d thrive at (research labs, frontier AI, experimental media) want both rigor and play.
+
+Strategy:
+
+Projects page: lead with Chronicle Assistant, Dollar Exit, King Wen / Gödel — each gets its own polished writeup (clean cards with links, optional deep dives).
+
+Blog: freeform. Code experiments, math sketches, cooking recipes, music drops. Everything in one stream — shows curiosity + range.
+
+Design ensures even the weird stuff looks elegant and intentional (so “recipe for fermented onions” and “essay on semantic incompleteness” sit side-by-side without breaking aesthetic).
+
+5. Github + Website Cohesion
+
+Right now your GitHub repos look unfinished / scattered.
+
+For each “flagship project”:
+
+Curate repo with clean README, visuals, maybe a hosted demo.
+
+Site links directly to these repos but in polished wrappers.
+
+That way, recruiters/colleagues see polished portal → raw repo.
+
+Conceptual Tagline
+
+Your site should immediately say:
+
+“This person builds AI systems like instruments — precise, strange, and alive.”
+
+Would you like me to sketch a site structure mockup (sections + flow + aesthetic references), or would you rather I focus on the technical stack recommendation (React + Next.js + Three.js/WebGL vs a lighter static site generator with JS sprinkles)?
+
+You said:
+focus on the optimal technical stack for this aesthetically.
+
+i like this at start but i want it to be beautiful. like different optimal colors for different parts of the terminal line. and i want it to be animated like a terminal loading. 
+
+> koerner@future:~$ whoami  
+AI researcher, coder, musician, cook, builder of strange tools.  
+> _
+
+then a quote ... i have a few but not worth finishing now.
+
+then projects...(click on/enter->3-5 polished finished products...with cards like the old site. how can this fit aesthetically in the terminal aesthetic ??->click on a project to go to the repo)
+
+then blog (click on or press enter->also cards/boxes with essay/writing titles and text summary->click on box, opens up essay/blog style page with same aesthetic but can display text, math, photos, web apps (like to video->music), code blocks together)
+
+then resume CV (link to pdf)
+ChatGPT said:
+
+Awesome. Here’s a tight, opinionated tech stack + build plan that gives you the Apple/OpenAI polish with a terminal core—including animated prompt, tasteful color, and a clean path for projects/blog/CV.
+
+Stack (modern, fast, beautiful)
+
+Framework: Next.js (App Router) + TypeScript
+
+Superb routing/SEO, image optimization, file-based MDX blog, zero-config Vercel deploy.
+
+Styling: Tailwind CSS + shadcn/ui (Radix under the hood)
+
+Gives you Apple-clean spacing/typography with accessible primitives.
+
+Typography: Inter (body) + JetBrains Mono (terminal + code)
+
+Animation: Framer Motion
+
+Cursor blink, line-by-line “terminal loading,” soft transitions between sections.
+
+Syntax & math: MDX (content), Shiki (code highlighting), KaTeX (math)
+
+Media: Next/Image + native <video> (muted/inline) for demos; lightbox for full-bleed shots
+
+Search: MiniFuse/mini-lunr or client-side Fuse.js for blog/project search
+
+Analytics: Plausible (privacy-friendly)
+
+Optional visuals: React Three Fiber (lazy-loaded) for subtle fractal/FBM background passes; gate by prefers-reduced-motion
+
+Information architecture
+/              → Terminal home (animated prompt, quote, section shortcuts)
+/work          → Projects grid (cards) + filters
+/work/[slug]   → Project case study (demo, write-up, links)
+/blog          → MDX index (cards)
+/blog/[slug]   → Essay (text, math, photos, code blocks, embedded demos)
+/about         → Short bio
+/cv            → PDF link (static)
+/music         → Landing for AI-music demos (optional)
+/api/og        → Social cards (nice previews)
+
+Terminal aesthetic (how to make it gorgeous)
+Prompt layout (semantic + color system)
+
+Split the prompt into tokens so you can color each part differently:
+
+user (teal-green), @, host (cool gray), : (muted), ~ (accent), $ (white)
+
+Use subtle glow on the caret and a 0.85 line-height in the prompt line for that tight terminal feel.
+
+Cursor: block cursor with opacity pulse (Framer Motion).
+
+Animation
+
+First visit:
+
+Type-on effect for whoami command (not character-by-character jittery—word-by-word at 60–120ms for elegance).
+
+Output fades in, then the “quote” rolls up underneath.
+
+Return visits:
+
+Skip long animation; show one-beat caret pulse and a quick “motd” line.
+
+Accessibility / performance
+
+Respect prefers-reduced-motion: show static prompt (no type animation, no WebGL).
+
+Keep WebGL behind an intersection observer + device check; otherwise a CSS shader/gradient background.
+
+Projects & blog inside the terminal vibe
+Projects page (terminal → grid)
+
+At the top, a single prompt prints:
+
+koerner@future:~$ ls work
+./chronicle  ./dollar-exit  ./video2idm  ./excelformer  ./microscopy
+
+
+As that “ls” renders, cards tween in beneath it (grid, airy, rounded 2xl, soft shadows).
+
+Card contents:
+
+Title, 1-line hook, tags (AI/Music/Finance/Bio), Demo and Repo buttons.
+
+Hover: subtle matrix-like scanline sparkle (1–2% opacity), not gimmicky.
+
+Blog page
+
+Top prompt:
+
+koerner@future:~$ open blog
+
+
+Then show MDX cards (title, 2-line excerpt, date, tag).
+
+Post page uses the same mono header and clean body typography; code blocks use Shiki themes matching your terminal palette; KaTeX renders inline and block math.
+
+Project case studies
+
+Same typography system.
+
+Structure: Problem → Approach → Outcome, with an inline demo (video/gif) at the top.
+
+Right rail (desktop): quick links (Repo, Demo, Tech stack, Year).
+
+Palette & type (ready-to-use)
+
+Background (dark): #0B0F10
+
+Foreground: #E6F1FF
+
+Terminal green-teal (accent): #00FFA8
+
+Muted gray: #6B7D86
+
+Link focus/hover: lighten accent + underline-on-hover only
+
+Mono: JetBrains Mono; Body: Inter
+
+Spacing: generous (Apple-ish); base 8px grid; max page width 960–1080px
+
+Fractal “glitch” (tasteful)
+
+Ambient: a very low-alpha FBM/pass noise behind content, ~10–15 FPS, resolution scaled; disable on mobile/low-power.
+
+Micro-glitch: single-frame RGB subpixel split on section transitions (Framer Motion + CSS filters).
+
+Burst (rare): 300–500 ms Mandelbrot/FBM bloom on idle + desktop + not reduced motion; dismiss immediately after; provide “Pause visuals (p)” in a help overlay.
+
+Content system (fast authoring)
+
+Blog posts: /content/blog/*.mdx
+
+Frontmatter: title, date, summary, tags, cover
+
+MDX supports math ($...$/$$...$$), code, images, callouts
+
+Projects: /content/work/*.mdx
+
+Frontmatter: title, summary, tags, repo, demo, tech, year, hero
+
+Auto-generate social images via /api/og from frontmatter (project/blog cards look pro on LinkedIn/Twitter).
+
+Component checklist (what you’ll build)
+
+TerminalFrame (prompt, history, caret, command router)
+
+PromptLine (token-colored segments, animation hooks)
+
+CommandRouter (maps help, open work, open blog, about, contact)
+
+ProjectCard, BlogCard (consistent card component)
+
+MDXRenderer (Shiki, KaTeX, custom callouts)
+
+Nav (sticky, minimal; or hide on home and reveal on inner pages)
+
+Footer (CV link, email, social)
+
+VisualsController (motion/idle/device gates; toggles for visuals)
+
+Launch sequence (three short sprints)
+
+Sprint 1 (MVP shell, 1–2 days)
+
+Next.js + Tailwind + shadcn scaffold; typography; base pages
+
+Terminal home with animated whoami, quote stub, and working commands
+
+Projects/blog index with placeholder cards
+
+About + CV link wired
+
+Sprint 2 (Content & polish, 2–4 days)
+
+Fill 3–5 project MDX entries (Chronicle, Dollar Exit, Video2IDM, ExcelFormer, Microscopy)
+
+Add 2–3 blog posts (King Wen note, fractal embedding sketch, site redesign writeup)
+
+Code highlighting (Shiki), math (KaTeX), image hero styles
+
+OG image API + Plausible + sitemap
+
+Sprint 3 (Visuals & refinement, 2–3 days)
+
+Ambient FBM background (R3F or CSS fallback) with motion gating
+
+Micro-glitch on route change; rare burst on idle
+
+Lighthouse + a11y pass; mobile tuning
+
+Final demo embeds (videos), repo/demo buttons
+
+Why this hits your goals
+
+Recruiter-ready: clean, fast, accessible; projects are obvious and polished.
+
+You-coded vibe: terminal prompt + tasteful glitches communicates your wavelength without looking gimmicky.
+
+Everything flows: projects → repos, blog → MDX essays with math, photos, recipes—same aesthetic.
+
+Maintainable: write in MDX, no CMS needed; add posts/projects in minutes.
+
+If you want, I can turn this into a Cursor build brief (task list + file tree + dependency list) so you can scaffold the repo exactly like this and just drop in content.
+
+You said:
+yes
+ChatGPT said:
+
+Perfect—here’s a Cursor-ready build brief to scaffold your site exactly as we discussed. It’s opinionated, production-oriented, and keeps you in “Apple-clean terminal” territory.
+
+Project name
+
+koerner-site
+
+Tech stack (install these)
+
+Next.js (App Router) + TypeScript
+
+Tailwind CSS
+
+shadcn/ui (Radix primitives)
+
+Framer Motion
+
+MDX (next-mdx-remote or @next/mdx)
+
+Shiki (code highlighting)
+
+KaTeX (math)
+
+Zustand (tiny global state)
+
+Plausible (analytics)
+
+(Optional) React Three Fiber + postprocessing (lazy WebGL background)
+
+Dependency list (add to package.json)
+
+next, react, react-dom, typescript
+
+tailwindcss, postcss, autoprefixer
+
+class-variance-authority, clsx, tailwind-merge
+
+@radix-ui/react-* (via shadcn/ui)
+
+framer-motion
+
+next-plausible (or simple script tag)
+
+reading-time (blog meta)
+
+shiki, rehype-pretty-code (or shiki via your own renderer)
+
+remark-gfm, rehype-katex, katex
+
+zustand
+
+(optional) @react-three/fiber, three, @react-three/drei, postprocessing
+
+Scripts you’ll want
+
+dev – next dev
+
+build – next build
+
+start – next start
+
+lint / format (eslint + prettier)
+
+og:dev (optional) – for social card route testing
+
+File tree (targets to create)
+/app
+  /(home)/page.tsx
+  /work/page.tsx
+  /work/[slug]/page.tsx
+  /blog/page.tsx
+  /blog/[slug]/page.tsx
+  /about/page.tsx
+  /cv/page.tsx              # simple link + fallback
+  /api/og/route.ts          # dynamic social images (optional)
+  /layout.tsx
+  /globals.css
+/components
+  TerminalFrame.tsx
+  PromptLine.tsx
+  CommandRouter.tsx
+  ProjectCard.tsx
+  BlogCard.tsx
+  MDXContent.tsx
+  Prose.tsx                 # typography wrapper for MDX
+  Nav.tsx                   # minimal; hidden on home
+  Footer.tsx
+  VisualsController.tsx     # motion/device gating; toggles
+  ThemeToggle.tsx
+/lib
+  mdx.ts                    # MDX loader + rehype/remark pipeline
+  shikiHighlighter.ts       # code highlighting setup
+  content.ts                # content indexer (blog/work)
+  readingTime.ts
+  colors.ts                 # design tokens
+  motion.ts                 # framer variants
+/content
+  /blog/*.mdx
+  /work/*.mdx
+  /assets/...               # images, covers, video thumbs
+/public
+  /fonts                    # Inter, JetBrains Mono
+  /cv/Koerner_Gray-Buchta.pdf
+  /og/*                     # default OG assets
+/styles
+  prose.css                 # MDX typography overrides
+
+Design tokens (use throughout)
+
+Colors
+
+bg #0B0F10
+
+fg #E6F1FF
+
+muted #6B7D86
+
+accent (terminal teal) #00FFA8
+
+card #0F1416 (elevated surface)
+
+Prompt token colors
+
+user #00FFA8
+
+host #9FB3C8
+
+path #8DE1C4
+
+symbol #E6F1FF
+
+Type
+
+Body: Inter
+
+Mono: JetBrains Mono
+
+Sizes: base 17px; h1 44–56; h2 32; h3 24
+
+Max width for prose: 720–760px; grid width 1040px
+
+Motion
+
+Cursor blink: 900ms opacity pulse
+
+Type-on: word-by-word 80–120ms
+
+Section fade: 180–220ms ease-out
+
+Route change micro-glitch: 120ms (RGB split < 2px)
+
+Terminal home (requirements)
+
+TerminalFrame
+
+Renders a monospace “pane” with subtle scanlines (very low opacity) and soft inner shadow.
+
+Accepts history: string[] and children for the active line.
+
+PromptLine
+
+Renders colored tokens: user@host:~$ then the command.
+
+Animations:
+
+First visit: type-on for whoami (word-level), then print output, then a quote line.
+
+Subsequent visits: skip long type-on; show caret pulse only.
+
+Accessibility: if prefers-reduced-motion, render statically.
+
+CommandRouter (keyboard + click)
+
+Supported commands:
+
+help → prints available commands
+
+ls or ls work → prints section names or project slugs
+
+open work|blog|about|cv|music → route to page
+
+theme toggle → dark/light
+
+glitch pause|play → visuals toggle
+
+Easter eggs allowed but off by default
+
+Always show clickable buttons beneath the prompt for Work, Blog, About, CV.
+
+Work (projects) page
+
+Top line:
+
+koerner@future:~$ ls work
+./chronicle  ./dollar-exit  ./video2idm  ./excelformer  ./microscopy
+
+
+Grid:
+
+ProjectCard with:
+
+title, one-liner hook, year, tags (AI/Music/Finance/Bio)
+
+two CTAs: Demo (if present), Repo
+
+hover: very subtle scanline shimmer; focus ring visible
+
+Project case study (/work/[slug])
+
+Structure:
+
+Hero (image or muted autoplay video)
+
+Problem → Approach → Outcome (3 short sections)
+
+Tech stack chips
+
+Links (Repo, Live demo)
+
+Keep prose width constrained; code snippets styled via Shiki; math via KaTeX if needed.
+
+Project content model (frontmatter)
+
+title: "Video→IDM"
+summary: "Optical flow → rhythm; color → harmony; renders MIDI/DAW."
+year: 2025
+tags: ["AI", "Music", "Python"]
+repo: "https://github.com/koernergb/video2idm"
+demo: "https://…"
+hero: "/assets/work/video2idm_hero.mp4"  # or .png
+
+Blog (MDX) page
+
+Top line:
+
+koerner@future:~$ open blog
+
+
+Cards:
+
+title, 2-line summary, date, tags
+
+clicking opens /blog/[slug]
+
+MDX pipeline
+
+remark-gfm, rehype-katex
+
+Shiki highlighting with a custom theme matching your colors
+
+Prose wrapper (nice typography)
+
+Components: <Callout type="note|warn">, <Figure>, <Video>
+
+Blog frontmatter
+
+title: "Fractal Embeddings — a sketch"
+date: "2025-09-01"
+summary: "Self-similar token neighborhoods for scale-free retrieval."
+tags: ["Research", "Embeddings"]
+cover: "/assets/blog/fractal_cover.png"
+
+Visuals (glitch/fractal) controller
+
+Ambient (default)
+
+If desktop + not prefers-reduced-motion, mount a lazy background (R3F or CSS fallback) with very subtle FBM twinkle at ~10–15 FPS, resolution scaled.
+
+On mobile or reduced motion → static gradient.
+
+Micro-glitch
+
+On route transitions: 120ms composite (RGB split, blur 1–2px, opacity 0.1–0.15). Keep very subtle.
+
+Burst (rare)
+
+Only if: user idle ≥ 60s, desktop, tab visible, device OK.
+
+300–500ms fractal bloom, then fade. Provide glitch pause command and a settings icon to disable.
+
+Navigation & footer
+
+Nav
+
+Minimal text links: Work · Blog · About · CV
+
+Hidden on the home terminal until first interaction, then fades in
+
+Cmd-K command palette (optional later)
+
+Footer
+
+Email, GitHub, LinkedIn, small “Built with Next/Tailwind/Framer Motion”
+
+CV link duplicated here
+
+Analytics & SEO
+
+Add Plausible script (EU domain option); disable on localhost
+
+Metadata per page (title/description from frontmatter)
+
+/api/og generates social cards from title + accent color (optional)
+
+Sitemap + robots.txt
+
+Accessibility targets
+
+All content reachable via links (no terminal required)
+
+Color contrast ≥ 4.5:1
+
+prefers-reduced-motion respected everywhere
+
+Keyboard navigation: prompt, links, cards, toggles
+
+Performance targets
+
+First contentful paint < 1.3s on desktop
+
+Limit WebGL bundle to a lazy module
+
+Next/Image for all images; prefetch only above-the-fold routes
+
+Lighthouse: Performance ≥ 90, Accessibility ≥ 95
+
+Launch checklist
+
+Fonts locally hosted (Inter, JetBrains Mono)
+
+Three to five filled project MDX files (Chronicle, Dollar Exit, Video→IDM, ExcelFormer, Microscopy)
+
+Two MDX blog posts (King Wen, site redesign)
+
+CV PDF in /public/cv and linked in About + Footer
+
+OG images working; Plausible enabled
+
+Mobile pass (iPhone SE/Pro & Pixel emulators)
+
+Reduced-motion pass (no animations, still looks great)
+
+Content you should prep this week
+
+Hooks (1-liners) for each flagship project
+
+Hero media (png/gif/mp4) per project
+
+Case study text (Problem • Approach • Outcome) ≤ 180 words each
+
+Two blog posts:
+
+“Designing a terminal-clean portfolio that doesn’t suck”
+
+“King Wen: a mathematical note”
+
+If you paste this brief into Cursor and work top-down (file tree → components → MDX content), you’ll have a polished v1 quickly—and it’ll scale as you drop in the Music AI demos and research notes.
+
+You said:
+whats a build brief how do i use this
+ChatGPT said:
+
+A “build brief” is basically a blueprint for your project — it sits between “idea” and “code.”
+
+Instead of diving straight into coding and getting lost, you keep this document open and work through it step by step, like a recipe.
+
+How to use the brief I gave you
+
+Scaffold the project
+
+Open Cursor (or VS Code).
+
+Run npx create-next-app@latest koerner-site --typescript --tailwind.
+
+Copy the file tree section from the brief and create those folders/files (many will be empty placeholders to start).
+
+Install the listed dependencies (npm install …).
+
+Start from structure → style → content
+
+Implement the TerminalFrame and PromptLine components first (since they define your aesthetic).
+
+Then wire up the CommandRouter so you can type ls work and see dummy output.
+
+Once that loop works, move on to the Work and Blog pages.
+
+Follow the design tokens
+
+Use the color palette, font choices, and motion timings given. This makes everything feel intentional and consistent.
+
+Copy those into tailwind.config.js so you can reference them easily.
+
+Add content
+
+Create a couple project MDX files under /content/work.
+
+Create a couple blog MDX files under /content/blog.
+
+Don’t over-polish yet—just enough to see the structure.
+
+Refine
+
+Once navigation + content work, add the fun: typing animation, glitch effects, rare fractal burst.
+
+Optimize for mobile & reduced-motion.
+
+Deploy
+
+Push to GitHub.
+
+Deploy with Vercel (vercel deploy).
+
+Now your site is live and iteratable.
+
+Why this helps
+
+Instead of a giant vague goal (“make my site terminal-inspired + glitchy + blog”), you have:
+
+Stack (what to install)
+
+File tree (where things live)
+
+Design tokens (how it should look/feel)
+
+Feature checklist (what to build first vs later)
+
+👉 Do you want me to turn this into a step-by-step task list (Day 1, Day 2, etc.), so you can just check items off and not get lost?
+
+You said:
+give me mkdir and touch commands to set up the project file structure
+ChatGPT said:
+
+Got it. Let’s assume you’ve just run
+
+npx create-next-app@latest koerner-site --typescript --tailwind
+cd koerner-site
+
+
+Here are the mkdir + touch commands to scaffold the structure I outlined:
+
+# inside koerner-site/
+
+# --- core app dirs ---
+mkdir -p src/components/{terminal,ui,layout}
+mkdir -p src/styles
+mkdir -p src/utils
+mkdir -p public/images
+mkdir -p content/{work,blog}
+
+# --- terminal components ---
+touch src/components/terminal/{TerminalFrame.tsx,PromptLine.tsx,CommandRouter.tsx,GlitchEffect.tsx}
+
+# --- UI components (cards, blog, etc.) ---
+touch src/components/ui/{Card.tsx,BlogCard.tsx,WorkCard.tsx}
+
+# --- layout (wrappers etc.) ---
+touch src/components/layout/{MainLayout.tsx,TerminalLayout.tsx}
+
+# --- utils ---
+touch src/utils/{commands.ts,theme.ts}
+
+# --- styles ---
+touch src/styles/{globals.css,terminal.css}
+
+# --- content (markdown/mdx) ---
+touch content/work/{project1.mdx,project2.mdx}
+touch content/blog/{post1.mdx,post2.mdx}
+
+# --- root config placeholders ---
+touch next.config.js
+touch tailwind.config.js
+touch postcss.config.js
+
+
+This will give you:
+
+koerner-site/
+ ├─ content/
+ │   ├─ blog/
+ │   │   ├─ post1.mdx
+ │   │   └─ post2.mdx
+ │   └─ work/
+ │       ├─ project1.mdx
+ │       └─ project2.mdx
+ ├─ public/images/
+ ├─ src/
+ │   ├─ components/
+ │   │   ├─ layout/
+ │   │   │   ├─ MainLayout.tsx
+ │   │   │   └─ TerminalLayout.tsx
+ │   │   ├─ terminal/
+ │   │   │   ├─ TerminalFrame.tsx
+ │   │   │   ├─ PromptLine.tsx
+ │   │   │   ├─ CommandRouter.tsx
+ │   │   │   └─ GlitchEffect.tsx
+ │   │   └─ ui/
+ │   │       ├─ Card.tsx
+ │   │       ├─ BlogCard.tsx
+ │   │       └─ WorkCard.tsx
+ │   ├─ styles/
+ │   │   ├─ globals.css
+ │   │   └─ terminal.css
+ │   └─ utils/
+ │       ├─ commands.ts
+ │       └─ theme.ts
+ ├─ next.config.js
+ ├─ tailwind.config.js
+ └─ postcss.config.js
+
+
+⚡ Do you want me to also give you starter code templates (like a bare-bones TerminalFrame.tsx and PromptLine.tsx) so when you open this in Cursor it already “runs” with a fake terminal line?
+
+You said:
+do this from earlier:
+
+
+
+Do you want me to map out specific companies/labs (music, bio, robotics) where this AI-for-signals framing would actually resonate with recruiters?
+
+yes
+ChatGPT said:
+
+Perfect. Here’s a map of companies/labs where your AI-for-signals framing (music, bio, robotics; extracting meaning from noisy multimodal data) will actually resonate with recruiters. I’ll break it down by domain:
+
+🎵 Music / Creative AI
+
+Where multimodal → signal processing → generative systems is the hook.
+
+Harmonai (Stability AI music spin-off) – music generation, diffusion models.
+
+Audiobridge – music collaboration app using AI processing.
+
+Endlesss.fm – live collaborative music creation (signal → generative).
+
+Magenta (Google Brain) – still active research on music + ML.
+
+Spotify Research – audio embeddings, recommendation, generative models.
+
+ByteDance (TikTok AI Lab) – video → music/audio relevance.
+
+Dolby.io Labs – signal processing for creative tools.
+
+Aiva, Amper, Boomy – smaller but visible AI-music companies.
+
+Your “Video → IDM” demo is a perfect showcase here.
+
+🧬 Bio / Signals in Biology
+
+Where microscopy + structured tabular modeling (ExcelFormer) directly apply.
+
+Insitro (Daphne Koller’s company) – structured data + cell imagery.
+
+Recursion Pharmaceuticals – microscopy + embeddings + generative models.
+
+Deep Genomics – signals from sequences → predictive modeling.
+
+CZI Imaging Institute – microscopy AI pipelines.
+
+Berkeley / UCSF Bakar BioEng / Gladstone Institutes – strong imaging + ML.
+
+Allen Institute for Cell Science – signal → 3D models of cells.
+
+Broad Institute – ML + bio-signals, open to unusual projects.
+
+EMBL (Europe) – computational bioimaging (signal extraction → structure).
+
+Your correlator + microscopy work slots right in.
+
+🤖 Robotics / Embodied AI
+
+Where perception/action is just signal → model → behavior.
+
+Boston Dynamics AI Institute – perception + control = signals framing.
+
+Agility Robotics – locomotion models, perception-control pipelines.
+
+Covariant – robotics + perception (warehouse manipulation).
+
+Intrinsic (Alphabet) – ML for robot control signals.
+
+NVIDIA Robotics Research – multimodal data, reinforcement learning.
+
+Toyota Research Institute – human-robot interaction, multimodal inputs.
+
+Open Robotics – open source, ROS community (great for GitHub presence).
+
+CMU RI, Stanford Robotics, MIT CSAIL – research labs that love “signal → structure → control” framings.
+
+🧩 Cross-Domain AI Labs / Foundations
+
+Where your “AI for strange signals” branding could appeal broadly.
+
+Anthropic / DeepMind / OpenAI – for interpretability + “signal decoding” pitches.
+
+Redwood Research / FAR AI – alignment + interpretability (good for your Gödel/fractal embedding work).
+
+Vicarious / Adept – history of framing AI as signal extraction.
+
+Element AI alumni labs (ServiceNow Research, Mila, etc.) – still into novel theory framings.
+
+🔑 How to Pitch the Frame
+
+Recruiters and PIs like a narrative that bridges your diverse repos:
+
+“I build AI systems that turn raw signals—whether microscopy, finance flows, or TikTok videos—into structured meaning and generative models.”
+
+That ties your GitHub together: ExcelFormer (tabular signals), Microscopy correlation (bio signals), Video → IDM (multimodal signals), Exit-risk monitor (financial signals).
+
+👉 Want me to draft a 1-page framing doc (“AI for Strange Signals”) that you can reuse for outreach + your website? It’d be like a manifesto + portfolio lens to unify all these projects.
