@@ -112,37 +112,6 @@ interface UIState {
   sonificationEnabled: boolean;
   setSonificationEnabled: (enabled: boolean) => void;
 
-  // RAVE sidecar control loop
-  raveControlEnabled: boolean;
-  raveWsUrl: string;
-  raveStatus: "idle" | "connecting" | "connected" | "error";
-  raveMode: string;
-  raveZNorm: number;
-  raveLfo: number;
-  raveLfoSent: number;
-  raveLpfHz: number;
-  raveLpfMin: number;
-  raveLpfMax: number;
-  raveLpfWet: number;
-  raveLpfQ: number;
-  raveLpfShelfDb: number;
-  filterLfoDebug: boolean;
-  setRaveControlEnabled: (enabled: boolean) => void;
-  setRaveWsUrl: (url: string) => void;
-  setFilterLfoDebug: (enabled: boolean) => void;
-  setRaveRuntime: ( partial: {
-    status?: "idle" | "connecting" | "connected" | "error";
-    mode?: string;
-    zNorm?: number;
-    lfo?: number;
-    lfoSent?: number;
-    lpfHz?: number;
-    lpfMin?: number;
-    lpfMax?: number;
-    lpfWet?: number;
-    lpfQ?: number;
-    lpfShelfDb?: number;
-  }) => void;
 }
 
 // Detect prefers-reduced-motion
@@ -180,39 +149,6 @@ export const useUiStore = create<UIState>((set, get) => {
     // Sonification
     sonificationEnabled: false,
     setSonificationEnabled: (enabled) => set({ sonificationEnabled: enabled }),
-
-    // RAVE sidecar control loop
-    raveControlEnabled: false,
-    raveWsUrl: "ws://127.0.0.1:8765",
-    raveStatus: "idle",
-    raveMode: "—",
-    raveZNorm: 0,
-    raveLfo: 0,
-    raveLfoSent: 0,
-    raveLpfHz: 0,
-    raveLpfMin: 600,
-    raveLpfMax: 20000,
-    raveLpfWet: 0.9,
-    raveLpfQ: 0.5,
-    raveLpfShelfDb: 0,
-    filterLfoDebug: true,
-    setRaveControlEnabled: (enabled) => set({ raveControlEnabled: enabled }),
-    setRaveWsUrl: (url) => set({ raveWsUrl: url }),
-    setFilterLfoDebug: (enabled) => set({ filterLfoDebug: enabled }),
-    setRaveRuntime: (partial) =>
-      set((state) => ({
-        raveStatus: partial.status ?? state.raveStatus,
-        raveMode: partial.mode ?? state.raveMode,
-        raveZNorm: partial.zNorm ?? state.raveZNorm,
-        raveLfo: partial.lfo ?? state.raveLfo,
-        raveLfoSent: partial.lfoSent ?? state.raveLfoSent,
-        raveLpfHz: partial.lpfHz ?? state.raveLpfHz,
-        raveLpfMin: partial.lpfMin ?? state.raveLpfMin,
-        raveLpfMax: partial.lpfMax ?? state.raveLpfMax,
-        raveLpfWet: partial.lpfWet ?? state.raveLpfWet,
-        raveLpfQ: partial.lpfQ ?? state.raveLpfQ,
-        raveLpfShelfDb: partial.lpfShelfDb ?? state.raveLpfShelfDb,
-      })),
 
     // Backdrop parameters (Misty Coral - soft, premium look)
     ca: {

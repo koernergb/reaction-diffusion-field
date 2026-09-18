@@ -15,11 +15,6 @@ const BackdropControls = dynamic(
   { ssr: false }
 );
 
-const FilterLfoDebug = dynamic(
-  () => import("@/components/audio/FilterLfoDebug"),
-  { ssr: false }
-);
-
 export const metadata: Metadata = {
 	title: "Koerner — Backdrop",
 	description: "Reaction-diffusion backdrop playground",
@@ -39,8 +34,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					</div>
 
 					<div className="relative z-10">{children}</div>
-
-					<FilterLfoDebug />
 
 					<div className="fixed right-4 bottom-4 z-50">
 						<BackdropControls />

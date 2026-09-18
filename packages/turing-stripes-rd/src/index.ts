@@ -7,8 +7,6 @@ export type RDFieldSnapshot = {
   data: Float32Array;
   /** Instantaneous RD timestep (includes dt sine modulation). */
   dt?: number;
-  /** sin() driving the dt bloom LFO, in [-1, 1] — same clock as the visual oscillation. */
-  lfoSin?: number;
   /** Simulation time in seconds. */
   simTime?: number;
   /** Period of the dt sine (seconds). */
@@ -68,4 +66,3 @@ export type StripesAPI = {
 };
 
 export { createTuringStripes } from "./runtime";
-

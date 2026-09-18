@@ -13,20 +13,11 @@ const BackdropControls: React.FC = () => {
     reactiveTouch,
     turing,
     sonificationEnabled,
-    raveControlEnabled,
-    raveWsUrl,
-    raveStatus,
-    raveMode,
-    raveZNorm,
-    filterLfoDebug,
     setShowBackdrop,
     setReducedMotion,
     setReactiveTouch,
     setTuringConfig,
     setSonificationEnabled,
-    setRaveControlEnabled,
-    setRaveWsUrl,
-    setFilterLfoDebug,
   } = useUiStore();
 
   return (
@@ -75,52 +66,6 @@ const BackdropControls: React.FC = () => {
               {sonificationEnabled ? "ON" : "OFF"}
             </button>
           </div>
-
-          {/* RAVE sidecar control */}
-          <div className="flex items-center justify-between">
-            <span>RAVE control</span>
-            <button
-              onClick={() => setRaveControlEnabled(!raveControlEnabled)}
-              className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
-                raveControlEnabled
-                  ? "bg-emerald-600 text-white"
-                  : "bg-slate-700 text-slate-300"
-              }`}
-            >
-              {raveControlEnabled ? "ON" : "OFF"}
-            </button>
-          </div>
-          {raveControlEnabled && (
-            <div className="space-y-1">
-              <label className="block text-emerald-300/70">WS URL</label>
-              <input
-                type="text"
-                value={raveWsUrl}
-                onChange={(e) => setRaveWsUrl(e.target.value)}
-                className="w-full rounded bg-black/50 border border-emerald-400/20 px-2 py-1 text-emerald-100"
-              />
-              <p className="text-emerald-300/50">
-                {raveStatus}
-                {raveStatus === "connected" ? ` · ${raveMode} · |z|=${raveZNorm.toFixed(2)}` : ""}
-              </p>
-              <div className="flex items-center justify-between pt-1">
-                <span>Filter LFO debug</span>
-                <button
-                  onClick={() => setFilterLfoDebug(!filterLfoDebug)}
-                  className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
-                    filterLfoDebug
-                      ? "bg-emerald-600 text-white"
-                      : "bg-slate-700 text-slate-300"
-                  }`}
-                >
-                  {filterLfoDebug ? "ON" : "OFF"}
-                </button>
-              </div>
-              <p className="text-emerald-300/50">
-                Start: <code className="text-emerald-200/80">services/rave-sidecar</code>
-              </p>
-            </div>
-          )}
 
           {/* Color Toggle */}
           <div className="flex items-center justify-between">

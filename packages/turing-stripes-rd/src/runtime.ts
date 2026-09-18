@@ -353,7 +353,6 @@ export function createTuringStripes(
   // Read RD field data from render target (V channel only)
   function readFieldSnapshot(
     currentDt: number,
-    lfoSin: number,
     simTime: number
   ): RDFieldSnapshot | null {
     if (!rtA || !onFieldUpdate) return null;
@@ -382,7 +381,6 @@ export function createTuringStripes(
       height: size,
       data: vData,
       dt: currentDt,
-      lfoSin,
       simTime,
       dtModPeriod: sim.dtModPeriod,
       f: sim.f,
@@ -458,7 +456,7 @@ export function createTuringStripes(
 
     // Periodically read and send field data to callback
     if (onFieldUpdate && now - lastFieldUpdateTime >= FIELD_UPDATE_INTERVAL_MS) {
-      const snapshot = readFieldSnapshot(oscillatingDt, lfoSin, validTime);
+      const snapshot = readFieldSnapshot(oscillatingDt, validTime);
       if (snapshot) {
         onFieldUpdate(snapshot);
       }
@@ -674,4 +672,3 @@ export function createTuringStripes(
 
   return api;
 }
-

@@ -7,7 +7,6 @@ import { useFeedbackCircuitAudio } from "@/audio/useFeedbackCircuitAudio";
 import { useRDAudioWavetable } from "@/audio/useRDAudioWavetable";
 import { useRDAudioFFT } from "@/audio/useRDAudioFFT";
 import { useCursorTickClicksAudio } from "@/audio/useCursorTickClicksAudio";
-import { useRaveLatentControl } from "@/audio/useRaveLatentControl";
 import { Metrics } from "./audio/MetricsDebug";
 import dynamic from "next/dynamic";
 
@@ -408,31 +407,12 @@ function computeMetrics(data: Float32Array, width: number, height: number): Metr
 }
 
 const AnimatedBackdrop: React.FC = () => {
-  const { showBackdrop, backdropVariant, reducedMotion, ca: caConfig, lenia3d: leniaConfig, turing: turingConfig, setCursorLightDir, hoverCenter, hoverStrength, sonificationEnabled, raveControlEnabled, raveWsUrl } = useUiStore();
+  const { showBackdrop, backdropVariant, reducedMotion, ca: caConfig, lenia3d: leniaConfig, turing: turingConfig, setCursorLightDir, hoverCenter, hoverStrength, sonificationEnabled } = useUiStore();
   const effectiveLightDir = useEffectiveLightDir();
   const { ready: audioReady, start: startAudio, stop: stopAudio, setMetrics: setFeedbackMetrics } = useFeedbackCircuitAudio();
   const { ready: rdAudioReady, start: startRDAudio, stop: stopRDAudio, updateFromField: updateRDAudio } = useRDAudioWavetable();
   const { ready: fftAudioReady, start: startFFTAudio, stop: stopFFTAudio, updateFromField: updateFFTAudio } = useRDAudioFFT();
   const { start: startCursorTicks, stop: stopCursorTicks, setCursorVelocity01 } = useCursorTickClicksAudio();
-  const { status: raveStatus, zNorm: raveZNorm, mode: raveMode, lfo: raveLfo, lfoSent: raveLfoSent, lpfHz: raveLpfHz, lpfMin: raveLpfMin, lpfMax: raveLpfMax, lpfWet: raveLpfWet, lpfQ: raveLpfQ, pushField: pushRaveField } = useRaveLatentControl({
-    enabled: raveControlEnabled,
-    url: raveWsUrl,
-  });
-  const setRaveRuntime = useUiStore((s) => s.setRaveRuntime);
-  useEffect(() => {
-    setRaveRuntime({
-      status: raveStatus,
-      mode: raveMode,
-      zNorm: raveZNorm,
-      lfo: raveLfo,
-      lfoSent: raveLfoSent,
-      lpfHz: raveLpfHz,
-      lpfMin: raveLpfMin,
-      lpfMax: raveLpfMax,
-      lpfWet: raveLpfWet,
-      lpfQ: raveLpfQ,
-    });
-  }, [raveStatus, raveMode, raveZNorm, raveLfo, raveLfoSent, raveLpfHz, raveLpfMin, raveLpfMax, raveLpfWet, raveLpfQ, setRaveRuntime]);
   const [metrics, setMetrics] = useState<Metrics>({ energy: 0, turbulence: 0, peak: 0, coherence: 0 });
   const [activePixels, setActivePixels] = useState<{ count: number; percentage: number; mean: number; stdDev: number; adaptiveThreshold: number }>({ 
     count: 0, 
@@ -448,9 +428,6 @@ const AnimatedBackdrop: React.FC = () => {
     sonificationEnabledRef.current = sonificationEnabled;
   }, [sonificationEnabled]);
 
-  // Cursor velocity shared with RAVE control (same tracker as tick clicks)
-  const raveCursorVelRef = useRef(0);
-
   // Store previous frame's data to detect changes
   const previousFrameDataRef = useRef<Float32Array | null>(null);
 
@@ -459,7 +436,6 @@ const AnimatedBackdrop: React.FC = () => {
     height: number;
     data: Float32Array;
     dt?: number;
-    lfoSin?: number;
     simTime?: number;
     dtModPeriod?: number;
     f?: number;
@@ -496,9 +472,6 @@ const AnimatedBackdrop: React.FC = () => {
       setFeedbackMetrics(computedMetrics);
     }
 
-    // Field + LFO + cursor → RAVE sidecar
-    pushRaveField(snapshot, { vel: raveCursorVelRef.current });
-    
     // Only update audio if sonification is enabled
     if (!sonificationEnabledRef.current) return;
     
@@ -507,7 +480,7 @@ const AnimatedBackdrop: React.FC = () => {
     
     // Update FFT audio
     updateFFTAudio(snapshot);
-  }, [updateRDAudio, updateFFTAudio, setFeedbackMetrics, pushRaveField]);
+  }, [updateRDAudio, updateFFTAudio, setFeedbackMetrics]);
   
   // Debug: log metrics and active pixels updates
   useEffect(() => {
@@ -589,7 +562,6 @@ const AnimatedBackdrop: React.FC = () => {
       // Check if mouse is outside window bounds - if so, reset velocity immediately
       const { innerWidth, innerHeight } = window;
       if (x < 0 || x > innerWidth || y < 0 || y > innerHeight) {
-        raveCursorVelRef.current = 0;
         setCursorVelocity01(0);
         lastRef.init = false; // Reset tracking
         if (decayTimer !== null) {
@@ -629,7 +601,6 @@ const AnimatedBackdrop: React.FC = () => {
         v01 = 0;
       }
       
-      raveCursorVelRef.current = v01;
       setCursorVelocity01(v01);
 
       lastRef.x = x;
@@ -639,7 +610,6 @@ const AnimatedBackdrop: React.FC = () => {
 
     const handleLeave = () => {
       // Reset velocity immediately when mouse leaves window
-      raveCursorVelRef.current = 0;
       setCursorVelocity01(0);
       lastRef.init = false;
       if (decayTimer !== null) {
