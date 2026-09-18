@@ -58,13 +58,3 @@ Thumbs.db
 .swc/
 .turbo/
 .pnpm-store/
-
-# Python sidecar
-services/rave-sidecar/.venv/
-services/rave-sidecar/models/*.ts
-services/rave-sidecar/models/
-**/__pycache__/
-*.pyc
-
-
-services/rave-sidecar/server.pre_tonal.py
