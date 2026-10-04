@@ -14,8 +14,10 @@ export default function TuringStripesBackdrop(props: StripesOptions) {
     if (isMobile) {
       return {
         ...props,
-        gridSize: Math.min(props.gridSize ?? 1024, 512), // Cap at 512 on mobile
-        stepsPerFrame: Math.max(1, Math.floor((props.stepsPerFrame ?? 10) * 0.5)), // Half steps on mobile
+        // Four times fewer simulation pixels than the desktop floor, with
+        // enough iterations to keep the field moving fluidly on phones.
+        gridSize: Math.min(props.gridSize ?? 1024, 256),
+        stepsPerFrame: Math.min(3, Math.max(1, Math.floor((props.stepsPerFrame ?? 10) * 0.3))),
       };
     }
     
@@ -67,4 +69,3 @@ export default function TuringStripesBackdrop(props: StripesOptions) {
     </div>
   );
 }
-

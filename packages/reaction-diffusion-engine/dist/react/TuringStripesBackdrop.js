@@ -1,21 +1,21 @@
 import { jsx as o } from "react/jsx-runtime";
-import { useRef as u, useMemo as d, useEffect as a } from "react";
+import { useRef as a, useMemo as d, useEffect as u } from "react";
 import { createTuringStripes as s } from "../index.js";
 function m(e) {
-  const n = u(null), r = u(null), t = d(() => typeof window > "u" ? e : window.innerWidth < 640 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? {
+  const n = a(null), r = a(null), t = d(() => typeof window > "u" ? e : window.innerWidth < 640 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? {
     ...e,
-    gridSize: Math.min(e.gridSize ?? 1024, 512),
-    // Cap at 512 on mobile
-    stepsPerFrame: Math.max(1, Math.floor((e.stepsPerFrame ?? 10) * 0.5))
-    // Half steps on mobile
+    // Four times fewer simulation pixels than the desktop floor, with
+    // enough iterations to keep the field moving fluidly on phones.
+    gridSize: Math.min(e.gridSize ?? 1024, 256),
+    stepsPerFrame: Math.min(3, Math.max(1, Math.floor((e.stepsPerFrame ?? 10) * 0.3)))
   } : e, [e]);
-  return a(() => {
+  return u(() => {
     if (n.current)
       return r.current = s(n.current, t), () => {
         var i;
         (i = r.current) == null || i.cleanup(), r.current = null;
       };
-  }, []), a(() => {
+  }, []), u(() => {
     r.current && r.current.setParams(t);
   }, [t]), /* @__PURE__ */ o("div", { style: { position: "fixed", inset: 0, width: "100vw", height: "100vh", backgroundColor: "#0a0a0a", zIndex: 0 }, children: /* @__PURE__ */ o(
     "canvas",

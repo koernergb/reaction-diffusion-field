@@ -51,6 +51,7 @@ export function createTuringStripes(
   opts: StripesOptions = {}
 ): StripesAPI {
   const options = { ...DEFAULT_OPTS, ...opts };
+  const mobile = window.matchMedia?.("(max-width: 760px), (pointer: coarse)").matches ?? false;
   
   // DEBUG: Log to verify enableColor is being passed correctly
   console.log('[TuringStripes] Initialization - opts.enableColor:', opts.enableColor, 'options.enableColor:', options.enableColor, 'will set uniform to:', options.enableColor ? 1.0 : 0.0);
@@ -58,7 +59,9 @@ export function createTuringStripes(
   // Create Three.js renderer
   const renderer = new THREE.WebGLRenderer({ 
     canvas,
-    antialias: true,  // Enable anti-aliasing to reduce aliasing artifacts
+    // Full-screen MSAA is expensive on tile-based mobile GPUs and adds little
+    // to this continuously varying procedural field.
+    antialias: !mobile,
     alpha: false,  // Set to false so clear color shows through properly
     powerPreference: 'high-performance' 
   });
@@ -313,8 +316,9 @@ export function createTuringStripes(
   }
 
   function resizeCanvas() {
-    // Use full device pixel ratio for high-DPI displays (removed cap at 2)
-    const dpr = window.devicePixelRatio || 1;
+    // A 3x phone screen otherwise shades nine times the CSS viewport every
+    // frame. Preserve the visual size while keeping mobile fill-rate bounded.
+    const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1 : 2);
     renderer.setPixelRatio(dpr);
     const width = canvas.clientWidth || window.innerWidth;
     const height = canvas.clientHeight || window.innerHeight;
